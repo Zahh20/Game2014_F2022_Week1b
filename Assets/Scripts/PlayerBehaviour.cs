@@ -4,21 +4,45 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-
+    //Floats.
     public float speed = 10.0f;
+    public float verticalPosition;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //Structs.
+   public Boundary_Script boundary_Script;
+
 
     // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
-        float y = Input.GetAxisRaw("Vertical") * Time.deltaTime * speed;
+        Move();
 
-        transform.position = new Vector2(transform.position.x + x, transform.position.y + y);
+        //CheckBounds();
     }
+
+    //Player movements.
+    public void Move()
+    {
+        float x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;//Goes left and right.
+        //float y = Input.GetAxisRaw("Vertical") * Time.deltaTime * speed;//Up and down.
+
+        transform.position += new Vector3(x, 0.0f, 0.0f);
+
+        float clampedPosition = Mathf.Clamp(transform.position.x, boundary_Script.min, boundary_Script.max);
+
+        transform.position = new Vector2(clampedPosition, verticalPosition);//Same thing as CheckBounds, but much shorter code.
+    }
+
+    //public void CheckBounds()
+    //{
+    //    if(transform.position.x > boundary_Script.max)
+    //    {
+    //        transform.position = new Vector2(boundary_Script.max, verticalPosition);
+    //    }
+
+    //    if(transform.position.x < boundary_Script.min)
+    //    {
+    //        transform.position = new Vector2(boundary_Script.min, verticalPosition);
+    //    }
+    //}
 }
